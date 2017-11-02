@@ -2,18 +2,21 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule }   from '@angular/forms'; // <-- NgModel lives here
 import { RouterModule} from '@angular/router';
-import { HttpModule } from '@angular/http'
+import { HttpClientModule } from '@angular/common/http';
 
-// Imports for loading & configuring the in-memory web api
-import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService }  from './in-memory-data.service';
+import { NgHttpLoaderModule } from 'ng-http-loader/ng-http-loader.module';
 
 import { AppComponent }        from './app.component';
-import { HeroDetailComponent } from './hero-detail.component';
-import { HeroesComponent }     from './heroes.component';
-import { DashboardComponent } from './dashboard.component' 
-import { HeroService }         from './hero.service';
-import { HeroSearchComponent} from './hero-search.component'
+import { NavigationComponent} from './navigation.component'
+// Reservations templates
+import { ReservationComponent } from './reservations/reservation.component'
+import { ReservationDetailComponent } from './reservations/detail/reservation-detail.component'
+// Reservations services
+import { ReservationService } from './reservations/reservation.service'
+// Dashboards templates
+import { DashboardComponent } from './dashboard/dashboard.component'
+
+import { PermissionComponent } from './permissions/permission.component'
 
 import { AppRoutingModule }     from './app-routing.module';
 
@@ -22,20 +25,21 @@ import { AppRoutingModule }     from './app-routing.module';
 @NgModule({
   declarations: [
     AppComponent,
-    HeroesComponent,
-    HeroDetailComponent,
+    NavigationComponent,
+    ReservationComponent,
+    ReservationDetailComponent,
+    PermissionComponent,
     DashboardComponent,
-    HeroSearchComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    HttpModule,
-    InMemoryWebApiModule.forRoot(InMemoryDataService),
+    HttpClientModule,
+    NgHttpLoaderModule
   ],
   providers: [
-    HeroService
+    ReservationService
   ],
   bootstrap: [AppComponent]
 })

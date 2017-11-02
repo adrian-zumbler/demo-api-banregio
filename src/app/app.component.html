@@ -1,4 +1,24 @@
-<h1>{{title}}</h1>
-<a routerLink="/dashboard">Dashboard</a>
-<a routerLink="/heroes">Heroes</a>
-<router-outlet></router-outlet>
+<div id="wrapper">
+    <nav class="navbar-default navbar-static-side" role="navigation" style="position:fixed">
+        <div class="sidebar-collapse">
+            <ul class="nav metismenu" id="side-menu">
+                <li class="nav-header">
+                    <a class="logo page-scroll" href="#header"><img src="" class="img-responsive image-logo" alt=""></a>
+                </li>     
+                <li>
+                    <a routerLink="/dashboard"><i class="fa fa-cubes"></i> <span class="nav-label">Dashboard</span></a>
+                    <a routerLink="/applications" [queryParams]="{ page: 1 }"><i class="fa fa-cubes"></i> <span class="nav-label">Reservaciones</span></a>
+                    <a routerLink="/permissions"><i class="fa fa-key"></i> <span class="nav-label">Permisos</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<div id="page-wrapper" class="gray-bg dashbard-1">
+    <div class="row border-bottom">
+        <navigation></navigation>
+    </div>
+    <router-outlet></router-outlet>
+</div>
+

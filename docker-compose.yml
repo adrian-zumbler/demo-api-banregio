@@ -1,10 +1,9 @@
 version: '2'
-
 services:
   web:
     build: .
     command: ng serve -host 0.0.0.0
     volumes:
-      - .:/usr/src/app
+      - '.:/usr/src/app'
     ports:
-      - "4200:4200"
+      - '4200:4200'
