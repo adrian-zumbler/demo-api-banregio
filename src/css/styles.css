@@ -8291,6 +8291,15 @@ body.md-skin {
   margin: 35px
 }
 
+.card-content {
+  padding: 15px
+}
+
+.card-score {
+  font-size: 40px;
+  font-weight: 600;
+}
+
 .label-form {
   font-size: 12px;
   color: #696f7b;
@@ -8302,7 +8311,8 @@ body.md-skin {
 
 .card > .card-header > h2,
 .card > .card-header > h3,
-.card > .card-header > h4 {
+.card > .card-header > h4,
+.card > .card-header > h5 {
   font-weight: bold;
   padding: 15px 15px;
   margin: 0px

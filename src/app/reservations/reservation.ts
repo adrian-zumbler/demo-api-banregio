@@ -10,6 +10,8 @@ export class Reservation {
     created_at: Date 
     service: string
     salon: string
+    nanda_discount_for_view: number
+    points: number
     service_price: number
     phone: string
     email: string

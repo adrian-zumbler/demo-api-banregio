@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule }   from '@angular/forms'; // <-- NgModel lives here
 import { RouterModule} from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { ChartsModule } from 'ng2-charts';
 
 import { NgHttpLoaderModule } from 'ng-http-loader/ng-http-loader.module';
 
@@ -15,6 +16,8 @@ import { ReservationDetailComponent } from './reservations/detail/reservation-de
 import { ReservationService } from './reservations/reservation.service'
 // Dashboards templates
 import { DashboardComponent } from './dashboard/dashboard.component'
+// Dashboard services
+import { DashboardService } from './dashboard/dashboard.service'
 
 import { PermissionComponent } from './permissions/permission.component'
 
@@ -36,10 +39,12 @@ import { AppRoutingModule }     from './app-routing.module';
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    NgHttpLoaderModule
+    NgHttpLoaderModule,
+    ChartsModule
   ],
   providers: [
-    ReservationService
+    ReservationService,
+    DashboardService
   ],
   bootstrap: [AppComponent]
 })

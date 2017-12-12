@@ -23,6 +23,8 @@
                 <th class="link_to_order">Salon <i class="fa fa-sort" aria-hidden="true"></i></th>
                 <th class="link_to_order">Precio<i class="fa fa-sort" aria-hidden="true"></i></th>
                 <th class="link_to_order">Precio final<i class="fa fa-sort" aria-hidden="true"></i></th>
+                <th class="link_to_order">Descuento<i class="fa fa-sort" aria-hidden="true"></i></th>
+                <th class="link_to_order">Puntos<i class="fa fa-sort" aria-hidden="true"></i></th>
                 <th class="link_to_order">Pago<i class="fa fa-sort" aria-hidden="true"></i></th>
                 <th class="link_to_order">Estatus<i class="fa fa-sort" aria-hidden="true"></i></th>
                 <th class="link_to_order">Creacion<i class="fa fa-sort" aria-hidden="true"></i></th>
@@ -39,6 +41,8 @@
                     <td>{{ reservation.salon }}</td>
                     <td><span class="text-warning"><strong>{{ reservation.service_price | currency: 'MXN':true }}</strong></span></td>
                     <td class="text-price text-center"><strong>{{ reservation.price | currency: 'MXN':true }}</strong></td>
+                    <td class="text-center"><strong>{{ reservation.nanda_discount_for_view | currency: 'MXN':true }}</strong></td>
+                    <td class="text-center"><strong>{{ reservation.points | currency: 'MXN':true }}</strong></td>
                     <td>{{ reservation.payment_method }}</td>
                     <td>{{ reservation.status }}</td>
                     <td>{{ reservation.created_at | date: "dd/MM/yy HH:mm"}}</td>

@@ -27,7 +27,7 @@
         "../node_modules/jquery/dist/jquery.min.js",
         "../node_modules/bootstrap/dist/js/bootstrap.min.js",
         "js/plugins/metisMenu/jquery.metisMenu.js",
-        "js/plugins/slimscroll/jquery.slimscroll.min.js",
+        "js/plugins/slimscroll/jquery.slimscroll.min.js",  
         "js/main.js"
       ],
       "environmentSource": "environments/environment.ts",
