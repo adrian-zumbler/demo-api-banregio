@@ -1,194 +1,66 @@
 <spinner [backgroundColor]="'#ff0000'" spinner="sk-wave"></spinner>
 <div class="wrapper wrapper-content">
-    <div>
-                <div class="btn-group" role="group" aria-label="...">
-                                <button type="button" (click)="getMetrics()" class="btn btn-default">Dia</button>
-                                <button type="button" (click)="getMetricsWeekly()" class="btn btn-default">Semana</button>
-                                <button type="button" (click)="getMetricsMonthly()" class="btn btn-default">Mes</button>
-                </div>
-    </div>    
-    <div class="row m-t">
-        <div class="col-lg-2">
-            <div class="card">
-                    <div class="card-header border-bottom">
-                            <h5>Creadas</h5>
-                    </div>
-                    <div class="card-content text-center">
-                        <span *ngIf="created" class="card-score">{{ created.count }}</span>
-                    </div>
-            </div>
+        <div *ngIf="!isAuthenticated">
+                <p>Inicia sesion para acceder a acceder a los datos de tus cuentas</p>
+                <p><a href="{{authorizeUrl}}">Go</a></p>
         </div>
-        <div class="col-lg-2">
-                <div class="card">
-                        <div class="card-header border-bottom">
-                                <h5>Programadas</h5>
+        <div *ngIf="isAuthenticated">
+                <div class="row">
+                        <div class="col-md-3">
+                                <div class="card" *ngFor="let account of accounts;">
+                                        
+                                        <div class="card-content text-center" style="margin:-60px">
+                                                <img src="assets/Tarjeta-Sync-2.png" style="transform: rotate(-90deg);" alt="" height="270" width="170">
+                                        </div>
+                                        <div class="card-content">
+                                                <h4>{{account.details['product_name']}}</h4>
+                                                <h5>Numero de Tarjeta: {{account.card_number}}</h5>
+                                                <h5>Balance: ${{account.balance}}</h5>
+                                        </div>
+                                </div>
                         </div>
-                        <div class="card-content text-center">
-                                <span *ngIf="active" class="card-score">{{ active.count }}</span>
-                        </div>
+                        
                 </div>
-        </div>
-        <div class="col-lg-2">
-                <div class="card">
-                        <div class="card-header border-bottom">
-                                <h5>Finalizadas</h5>
-                        </div>
-                        <div class="card-content text-center">
-                                <span *ngIf="finished" class="card-score">{{ finished.count }}</span>
-                        </div>
-                </div>
-        </div>
-        <div class="col-lg-2">
-                <div class="card">
-                        <div class="card-header border-bottom">
-                                <h5>No se presento</h5>
-                        </div>
-                        <div class="card-content text-center">
-                                <span *ngIf="noShow" class="card-score">{{ noShow.count }}</span>
-                        </div>
-                </div>
-        </div>
-        <div class="col-lg-2">
-                <div class="card">
-                        <div class="card-header border-bottom">
-                                <h5>Canceladas</h5>
-                        </div>
-                        <div class="card-content text-center">
-                                <span *ngIf="cancelled" class="card-score">{{ cancelled.count }}</span>
-                        </div>
-                </div>
-        </div>
-        <div class="col-lg-2">
-                <div class="card">
-                        <div class="card-header border-bottom">
-                                <h5>Usuarios</h5>
-                        </div>
-                        <div class="card-content text-center">
-                            <span class="card-score">30</span>
-                        </div>
-                </div>
-        </div>
-    </div>
-    <div class="row m-t">
-            <div class="col-lg-12">
-                    <div class="card">
-                            <div class="card-header border-bottom">
-                                    <h5>Reservas</h5>
-                            </div>
-                            <div class="card-conten">
-                                    <canvas baseChart width="100" height="20"
-                                        [datasets]="lineChartData"
-                                        [labels]="lineChartLabels"
-                                        [options]="lineChartOptions"
-                                        [colors]="lineChartColors"
-                                        [legend]="lineChartLegend"
-                                        [chartType]="lineChartType"
-                                        (chartHover)="chartHovered($event)"
-                                        (chartClick)="chartClicked($event)">
-                                    </canvas>
-                                
-                            </div>
-                    </div>
-            </div>
-    </div>
-    <div class="row m-t">
-            <div class="col-lg-4">
-                    <div class="card">
-                            <div class="card-header border-bottom">
-                                    <h5>Metodos de pago</h5>
-                            </div>
-                            <div class="card-content">
-                                <table class="table table-hover no-margins">
-                                    <thead>
-                                        <tr>
-                                            <th>Metodo</th>
-                                            <th>Reservas</th>
-                                            <th>%</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Oxxo</td>
-                                            <td>15</td>
-                                            <td>25%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Centro</td>
-                                            <td>26</td>
-                                            <td>32%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Tarjeta</td>
-                                            <td>20</td>
-                                            <td>18%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Paypal</td>
-                                            <td>10</td>
-                                            <td>12%</td>
-                                        </tr>
-                                    </tbody>
+                <br>
+                <div class="row">
+                        <div class="col-md-12">
+                                <table class="table-banregio">
+                                        <thead>
+                                                <tr>
+                                                        <th>Id</th>
+                                                        <th>Fecha</th>
+                                                        <th>Referencia</th>
+                                                        <th>Descripcion</th>
+                                                        <th>Cantidad</th>
+                                                        <th>Categoria</th>
+                                                </tr>
+                                        </thead>
+                                        <tbody >        
+                                                <tr *ngFor="let transaction of transactions">
+                                                        <td>
+                                                                {{transaction.transaction_number}}
+                                                        </td>
+                                                        <td>
+                                                                {{transaction.date}}
+                                                        </td>
+                                                        <td>
+                                                                {{transaction.reference_number}}
+                                                        </td>
+                                                        <td>
+                                                                {{transaction.description}}
+                                                        </td>
+                                                        <td>
+                                                                ${{transaction.amount}}
+                                                        </td>
+                                                        <td>
+                                                                {{transaction.details['category']}}
+                                                        </td>
+                                                        
+                                                </tr>
+                                        </tbody>
                                 </table>
-                                <canvas baseChart
-                                [data]="doughnutChartData"
-                                [labels]="doughnutChartLabels"
-                                [chartType]="doughnutChartType"
-                                ></canvas>      
-                            </div>
-                    </div>
-            </div>
-                <div class="col-lg-4">
-                        <div class="card">
-                                <div class="card-header border-bottom">
-                                        <h5>Mejores Salones</h5>
-                                </div>
-                                <div class="card-content">
-                                        <table class="table table-hover no-margins">
-                                        <thead>
-                                                <tr>
-                                                
-                                                <th>Reservas</th>
-                                                <th>%</th>
-                                                </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                <td>Oxxo</td>
-                                                <td>15</td>
-                                                </tr>
-                                        </tbody>
-                                        </table> 
-                                </div>
                         </div>
                 </div>
-                <div class="col-lg-4">
-                        <div class="card">
-                                <div class="card-header border-bottom">
-                                        <h5>Cupones</h5>
-                                </div>
-                                <div class="card-content">
-                                        <table class="table table-hover no-margins">
-                                        <thead>
-                                                <tr>
-                                                
-                                                <th>Reservas</th>
-                                                <th>%</th>
-                                                </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                <td>Oxxo</td>
-                                                <td>15</td>
-                                                </tr>
-                                        </tbody>
-                                        </table> 
-                                        <canvas baseChart
-                                        [data]="doughnutChartData"
-                                        [labels]="doughnutChartLabels"
-                                        [chartType]="doughnutChartType"
-                                        ></canvas>
-                                </div>
-                        </div>
-                </div>
-    </div>     
+
+        </div>
 </div>

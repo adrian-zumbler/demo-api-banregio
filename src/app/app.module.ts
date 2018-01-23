@@ -10,16 +10,14 @@ import { NgHttpLoaderModule } from 'ng-http-loader/ng-http-loader.module';
 import { AppComponent }        from './app.component';
 import { NavigationComponent} from './navigation.component'
 // Reservations templates
-import { ReservationComponent } from './reservations/reservation.component'
-import { ReservationDetailComponent } from './reservations/detail/reservation-detail.component'
 // Reservations services
-import { ReservationService } from './reservations/reservation.service'
 // Dashboards templates
-import { DashboardComponent } from './dashboard/dashboard.component'
+import { DashboardComponent } from './dashboard/dashboard.component';
 // Dashboard services
-import { DashboardService } from './dashboard/dashboard.service'
-
-import { PermissionComponent } from './permissions/permission.component'
+import { DashboardService } from './dashboard/dashboard.service';
+import { ApiOAuthService } from './apiBanregio/apiOAuth.service';
+import { ApiBanregioService } from './apiBanregio/apiBanregio.service';
+// Salon Templates
 
 import { AppRoutingModule }     from './app-routing.module';
 
@@ -29,10 +27,8 @@ import { AppRoutingModule }     from './app-routing.module';
   declarations: [
     AppComponent,
     NavigationComponent,
-    ReservationComponent,
-    ReservationDetailComponent,
-    PermissionComponent,
     DashboardComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -40,11 +36,11 @@ import { AppRoutingModule }     from './app-routing.module';
     AppRoutingModule,
     HttpClientModule,
     NgHttpLoaderModule,
-    ChartsModule
   ],
   providers: [
-    ReservationService,
-    DashboardService
+    DashboardService,
+    ApiOAuthService,
+    ApiBanregioService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-
+import {Router, ActivatedRoute, Params} from '@angular/router';
+import { environment } from '../../environments/environment'
 import { DashboardService } from './dashboard.service'
+import { ApiOAuthService } from '../apiBanregio/apiOAuth.service';
+import { ApiBanregioTokenHelper } from '../apiBanregio/apiBanregioTokenHelper';
+import { ApiBanregioService } from '../apiBanregio/apiBanregio.service';
+import { Account } from '../_wrappers/account'
+import { Transaction } from '../_wrappers/transaction'
 
 @Component({
     templateUrl: './dashboard.component.html'
@@ -13,15 +19,84 @@ export class DashboardComponent implements OnInit {
     public finished:object
     public noShow:object
     public cancelled:object
+    public isAuthenticated: boolean = false
+    public authorizeUrl: string
+    private code: string
+    private accessToken: string
+    public accounts: Account[]
+    public transactions: Transaction[]
+    
+
 
     constructor(
-      private dashboardService: DashboardService
-    ){}
+      private dashboardService: DashboardService,
+      private apiOAuthService: ApiOAuthService,
+      private apiBanregioService: ApiBanregioService,
+      private activatedRoute: ActivatedRoute,
+      private router:Router
+    ){
+      
+      
+    }
 
     ngOnInit(): void{
-      this.getMetrics()
-      this.getChartData()
+      this.getIsAuthenticated();
+      if (!this.isAuthenticated) {
+        let tokenHelper = new ApiBanregioTokenHelper(
+          environment.client_id,
+          environment.client_secret,
+          environment.redirect_uri
+        );
+        this.authorizeUrl = tokenHelper.build().getAuthorizeUrl()
+        this.activatedRoute.queryParams.subscribe((params: Params) => {
+          this.code = params['code'];
+          if(this.code != null) {
+            this.getAccessToken(this.code);
+            window.location.href = 'http://localhost:4200/dashboard';
+            
+          }
+          
+        });
+      } else {
+        this.getAccounts();
+      }
+
     }
+
+    getAccessToken(code:string): void {
+      this.apiOAuthService.getAccessToken(code)
+      .then(response => {
+        console.log(response);
+        this.accessToken = response.access_token
+        localStorage.setItem('access_token', this.accessToken);
+      })
+    }
+
+    getAccounts(): void {
+      this.apiBanregioService.getAccounts()
+      .then(response=>{
+        console.log(response['accounts']);
+        this.accounts = response['accounts'] as Array<Account>;
+        this.getTransactions(this.accounts[0].id);
+        })
+      }
+    
+
+    getTransactions(accountId): void {
+      this.apiBanregioService.getTransactions(accountId)
+      .then(response=>{
+        this.transactions = response['transactions'] as Array<Transaction>;
+        console.log(this.transactions);
+      }) 
+    }
+
+    getIsAuthenticated(): void {
+      let tmpAccessToken = localStorage.getItem('access_token');
+      if (tmpAccessToken) {
+        this.isAuthenticated = true;
+      }
+    }
+
 
     getMetrics(): void{
       this.dashboardService.getMetrics()
@@ -34,125 +109,5 @@ export class DashboardComponent implements OnInit {
           this.cancelled = response.cancelled
         })
     }
-
-    getMetricsWeekly(): void {
-      this.dashboardService.getMetricsWeekly()
-      .then(response => {
-        console.log(response)
-        this.created = response.created
-        this.active = response.active
-        this.finished = response.finished
-        this.noShow = response.no_show
-        this.cancelled = response.cancelled
-      })
-    }
-
-    getMetricsMonthly(): void {
-      this.dashboardService.getMetricsMonthly()
-      .then(response => {
-        console.log(response)
-        this.created = response.created
-        this.active = response.active
-        this.finished = response.finished
-        this.noShow = response.no_show
-        this.cancelled = response.cancelled
-      })
-    }
-
-    getChartData(): void {
-      this.dashboardService.getChartData()
-        .then(response => {
-          console.log(response)
-          this.lineChartLabels = response.x
-          this.lineChartData = [
-            {data: response.y, label: 'Reservas'},
-          ];
-        })
-    }
-
-    public lineChartData:Array<any> = [
-        {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
-      ];
-      public lineChartLabels:Array<any> = [
-"01:00",
-"02:00",
-"03:00",
-"04:00",
-"05:00",
-"06:00",
-"07:00",
-"08:00",
-"09:00",
-"10:00",
-"11:00",
-"12:00",
-"13:00",
-"14:00",
-"15:00",
-"16:00",
-"17:00",
-"18:00",
-"19:00",
-"20:00",
-"21:00",
-"22:00",
-"23:00"
-];
-      public lineChartOptions:any = {
-        responsive: true
-      };
-      public lineChartColors:Array<any> = [
-        { // grey
-          backgroundColor: '#2dccd3',
-          borderColor: 'rgba(148,159,177,1)',
-          pointBackgroundColor: 'rgba(148,159,177,1)',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-        },
-        { // dark grey
-          backgroundColor: 'rgba(77,83,96,0.2)',
-          borderColor: 'rgba(77,83,96,1)',
-          pointBackgroundColor: 'rgba(77,83,96,1)',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: 'rgba(77,83,96,1)'
-        },
-        { // grey
-          backgroundColor: 'rgba(148,159,177,0.2)',
-          borderColor: 'rgba(148,159,177,1)',
-          pointBackgroundColor: 'rgba(148,159,177,1)',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-        }
-      ];
-      public lineChartLegend:boolean = true;
-      public lineChartType:string = 'line';
-     
-      public randomize():void {
-        let _lineChartData:Array<any> = new Array(this.lineChartData.length);
-        for (let i = 0; i < this.lineChartData.length; i++) {
-          _lineChartData[i] = {data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label};
-          for (let j = 0; j < this.lineChartData[i].data.length; j++) {
-            _lineChartData[i].data[j] = Math.floor((Math.random() * 100) + 1);
-          }
-        }
-        this.lineChartData = _lineChartData;
-      }
-     
-      // events
-      public chartClicked(e:any):void {
-        console.log(e);
-      }
-     
-      public chartHovered(e:any):void {
-        console.log(e);
-      }
-
-      // Doughnut
-    public doughnutChartLabels:string[] = ['Oxxo', 'Centro', 'Tarejeta','Paypal'];
-    public doughnutChartData:number[] = [10, 15, 30,12];
-    public doughnutChartType:string = 'doughnut';
 
 }
