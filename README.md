@@ -1,6 +1,6 @@
-# MyApp
+# Banregio Api Demo
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.4.9.
+Dummy app for consume https://api.banregio.com
 
 ## Development server
 
